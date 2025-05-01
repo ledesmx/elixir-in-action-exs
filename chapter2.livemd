@@ -1,0 +1,199 @@
+# Chapter 2. Building blocks
+
+## Working with variables
+
+Elixir is a dynamic programming language. The variable type is determined by whatever data it contains at the moment.
+
+In Elixir terms, assignment s called *binding*. The varible is bound to the value.
+
+```elixir
+population = 800000
+```
+
+The prevalent naming convention is to use only lowecase letters, digits, and underscores
+
+```elixir
+valid_variable_name = 5
+valid_2 = 10
+```
+
+**Data in Elixir is immutable**: its contents can't be changed. But variables can be rebound to a different value.
+
+Rebinding doesn't mutate the existing memory location. It reserves new memory and reassigns the symbolic name to the new location.
+
+```elixir
+population = 2000000
+pupulation = 300000
+```
+
+Elixir is a garbage-collectable language, which means you don't have to manually release memory. When a variable goes out of scope, the corresponding memory is elegible for garbage collection and will be released sometime in the future.
+
+## Organizing your code
+
+Elixir is a functional language. Due to the immutable nature of the data, a typical Elixir program consists of many small functionsl.
+
+### Modules
+
+A *module* is a collection of functions.
+Every function must be defined inside a module.
+
+The standard library provides many useful modules. For example, the `IO` has the `puts` function, which can be used to print a message.
+
+```elixir
+IO.puts("Hello")
+```
+
+The `defmodule` construct is used to define modules.
+
+The `def` construct is used to define functions.
+
+Modules names:
+
+* Starts with uppercase letter
+* Are usually written in *CamelCase*
+* Can consist of alphanumerics, underscores, and the dot (`.`) character.
+
+```elixir
+defmodule Ops do
+  def add_two_nums(a, b) do
+    a + b
+  end
+end
+
+Ops.add_two_nums(7, 2)
+```
+
+A module must be defined in a single file. A single file may contain multiple modules.
+
+```elixir
+defmodule Module1 do
+  # code
+end
+defmodule Module2 do
+  # code
+end
+```
+
+The latter is often used to organize modules hierachically.
+
+Both the dot character and the nesting are conveniences. Once the code is compiled, there are no special hierarchical relations between modules. The dot can help you scope your names.
+
+```elixir
+# Both approaches are equivalent
+
+#1
+defmodule Geometry.Rectangle do
+  
+end
+defmodule Geometry.Circle do
+  
+end
+
+#2
+defmodule Geometry do
+  defmodule Square do
+    
+  end
+  defmodule Triangle do
+    
+  end
+end
+```
+
+### Functions
+
+A function must always be a part of a module. They follow the same naming conventions as variables.
+
+As a convention, functions names can end with `?` and `!`. `?` is used to indicate a function that retuns either *true* or *false*. `!` indicates that it may raise a runtime error.
+
+If a function has no arguments, you can omit the parentheses.
+
+Also there is no explicit return in Elixir. Everything that has a return value is an expression. Ther return value of a function is the return value of its last expression.
+
+```elixir
+defmodule Hi do
+  def hi do
+    "hi"
+  end
+end
+
+# Parentheses are optional
+Hi.hi
+```
+
+If a definition is short, you can use a condensed form.
+
+```elixir
+defmodule No do
+  def say_no, do: "no"
+
+  def add(a, b), do: a + b
+end
+
+IO.puts(No.say_no)
+IO.puts(No.add(3, 2))
+```
+
+Given that elixir is a functional language, you often need to combien functions, passing the result as an argument to the next one.
+
+The pipeline operator operator places the result of the previous call as the first argument of the next call.
+
+```elixir
+defmodule SM do
+  def increment(x), do: x + 1
+  def decrement(x), do: x - 1
+end
+
+# Using the pipeline operator
+5
+|> SM.increment
+|> SM.increment
+|> SM.decrement
+|> SM.increment
+|> IO.puts
+
+# It is transformed at compile time into the following
+IO.puts(SM.increment(SM.decrement(SM.increment(SM.increment(5)))))
+```
+
+### Function arity
+
+Arity is the number of arguments a function reveives.
+
+A function is uniquely identified by its containing module, its name, and its arity.
+
+The following function is called `Reactangle.area/2`
+
+<!-- livebook:{"force_markdown":true} -->
+
+```elixir
+defmodule Rectangle do
+  def area(a, b) do
+  end
+end
+```
+
+Two functions with the same name but different arities are two different functions. In the following example, the name might be overloaded, but the arities differ, so we talk about them as two distinct functions, each having its own implementation.
+
+```elixir
+defmodule Rect do
+  def area(a), do: area(a, a)
+  def area(a, b), do: a * b
+end
+```
+
+It usually makes no sense for different functions with a same name to have completily different implementations. More commonly, a lower-arity function delegates to a higher-arity function. This pattern is so frequent that Elixir allows you to specify defaults for arguments. Always keep in mind that default values generate multiple functions of the same name with different arities.
+
+```elixir
+defmodule Calculator do
+  def sum(a, b, c \\ 0, d \\ 0), do: a + b + c + d
+end
+# This generates:
+# Calculator.sum/2
+# Calculator.sum/3
+# Calculator.sum/4
+
+IO.puts Calculator.sum(5, 6)
+IO.puts Calculator.sum(5, 6, 7)
+IO.puts Calculator.sum(5, 6, 7, 8)
+```
