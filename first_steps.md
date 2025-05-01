@@ -251,4 +251,68 @@ Elixir. Language constructs like `if` and `unless` are implemented via Elixir ma
 
 ### Composing functions
 
+Both Erlang and Elixir are functional languages. They rely on immutabl data and functions
+that transform data. Code is divided into many small, reusable, composable functions.
 
+Unfortunately, the composablility feature works clumsy in Erlang.
+```erlang
+process_xml(Model, Xml) ->
+ Model1 = update(Model, Xml),
+ Model2 = process_changes(Model1),
+ persist(Model2).
+```
+```erlang
+process_xml(Model, Xml) ->
+ persist(
+   process_changes(
+     update(Model, Xml)
+   )
+ ).
+ ```
+
+Elixir gives you an elegant way to chain multiple function calls together.
+```elixir
+def process_xml(model, xml) do
+ model
+ |> update(xml)
+ |> process_changes()
+ |> persist()
+end
+```
+
+### The big pixture
+
+- The API for standard libraries is cleaned up and follows some defined conventions.
+- Syntatic sugar is introduced that simplifies typical idioms.
+- A concise syntac for working with structured data is provided.
+- String manipulation is improved.
+- *Mix* simplifies common tasks, such as creating applications and libraries, managing
+dependencies, and compiling and testing code.
+- *Hex* (package manager) makes it simpler to package, distribute, and reuse dependencies.
+
+## Disadvantages
+
+### Speed
+
+Erlang programs are run in the BEAM and, therefore, can't achieve the speed of
+machine-compiled languages. But it isn't poor engineering. The goal of the platform isn't
+to squeeze out as many requests per second as possible but to keep performance as
+predictable and within limits as possible.
+
+Intensive CPU computations aren't as performant as the low level counterparts, so you may
+consider implementing such task in some other language and the integrating the
+corresponding into your Erlang system. If most of your system's logic is heavil CPU bound,
+you should probably consider some other technology.
+
+### Ecosystem
+
+The ecosystem built around Erlang isn't small, but it definitely isn't as large as that
+of some other languages.
+
+You should be aware that your choice of libraries won't be as abundant as you may be used
+to. Keep in mind all the benefits you get from Erlang. Erlang's significant aid in
+solving hard problems makes it a useful tool.
+
+Perhaps you don't expect a high load or a system doesn't need to run constantly and be
+extremely fault tolerant. In such cases, you may want to consider some other technology
+stack.
