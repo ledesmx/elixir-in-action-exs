@@ -216,3 +216,32 @@ end
     
 TestPrivate.double(7)
 ```
+
+### Imports and aliases
+
+Calling functions from another module can sometimes be cumbersome, because you need to reference the module name. Importing a module allows you to call its public functions without prefixing them with the module name.
+
+An alternative to `import` is `alias`, a construct that makes it possible to reference a module under a different name. Although they increase ambiguity, in some cases they can be useful to improve readability, especially if you call functions from a long-named module many times.
+
+```elixir
+defmodule MyModule do
+  import IO
+
+  def my_fun do
+    puts "calling my function"
+  end
+end
+
+defmodule MyOtherModule do
+  alias IO, as: SAY
+
+  def my_fun do
+    SAY.puts "calling other module's function"
+  end
+end
+
+MyModule.my_fun()
+MyOtherModule.my_fun()
+```
+
+The standard library's `Kernel` module is automatically imported into every modue. This is because `Kernel` contains functions that are often used.
