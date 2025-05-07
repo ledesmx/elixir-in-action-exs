@@ -580,3 +580,65 @@ If you provide a byte value bigger than 255, it's truncated to the byte size.
 # Concatenate two binaries or bitstrings
 <<1, 2>> <> <<4, 5>>
 ```
+
+### Strings
+
+Elixir doesn't have a dedicated string type. Instead, strings are represented by using either a binary or a list type.
+
+#### Binary strings
+
+We specify them with the double-quotes syntax. The result is is printed as a string, but underneath, it's a binary. `"This is a string"`
+
+```elixir
+# Embedded string expressions
+IO.puts "Embedded expression #{99 + 66}"
+
+# \ escaping
+IO.puts "START \r ESCAPE \n DOUBLE-Q \" MMM... \\"
+
+# Multiline strings
+a = "
+This
+is a 
+multiline
+string!!
+"
+IO.puts a
+
+# Sigils, alternative syntax
+IO.puts ~s(This is also a "String")
+
+# Sigil with uppercase. No interpolation or escape characters
+IO.puts ~S(Exp #{4 + 4} \n right?)
+
+# Heredocs syntax, supports better formating for multiline strings
+b = """
+Heredoc must en on its own line """ xd
+"""
+IO.puts b
+
+# Concatenate. They are binaries
+IO.puts "H3110" <> " " <> "W0R1D"
+```
+
+#### Character lists
+
+An alternative way of representing strings is to use single-quote. But this syntax is actually deprecated. The character list sigil is the recommended one. `~c"charlist"`.
+
+Even the runtime doesn't distinguish between a list of integers and character list. When a list consists of integers that represent printable characters, it's printed to the screen in the string form.
+
+<!-- livebook:{"force_markdown":true} -->
+
+```elixir
+~c"ABC"
+
+[65, 66, 67]
+
+# Interpolation
+~c"Hello #{4 + 10}"
+
+# Convert binary string to character list
+String.to_charlist("ABC")
+```
+
+Character lists aren't compatible with binary strings. In general, you should prefer binary string as much as possible, using character lists only when some third-party library requires it (This mostly happens with pure Erlang libraries).
