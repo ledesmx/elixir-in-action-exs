@@ -394,3 +394,26 @@ You can use `&&` to ensure that certain conditions are met.
 ```elixir
 database_value = connection_established? && read_data
 ```
+
+<!-- livebook:{"break_markdown":true} -->
+
+### Tuples
+
+Tuples are something like untypd structures or records, and they're most often used to group a *fixed number* of elements together.
+
+* To extract an element from the tuple, you can use the `Kernel.elem/2` function.
+* To modify an element you can use the `Kernel.put_elem/3` function. It doesn't modify the tuple. It returns the new version. Recall that data in Elixir is immutable.
+
+Tuples are most appropiate to group a small, fixed number of elements together.
+
+```elixir
+person ={"Bob", 24}
+
+IO.puts elem(person, 0)
+
+person
+|> put_elem(1, 33)
+|> elem(1)
+|> IO.puts
+
+```
