@@ -417,3 +417,55 @@ person
 |> IO.puts
 
 ```
+
+### Lists
+
+Lists in Erlang are used to manage dynamic, *variable-sized* collections of data.
+
+Lists work like singly linked lists. To do something with the list, you have to traverse it. Therefore, most of the operations on lists have an O(n) complexity.
+
+```elixir
+prime_numbers = [1, 2, 3, 5, 7]
+
+# Iterates through the entire list to calculate its length
+IO.puts length(prime_numbers)
+
+# Iterates from the beginning to the desired element
+IO.puts Enum.at(prime_numbers, 3)
+
+# Check wheter a list contain a particular element
+IO.puts 6 in prime_numbers
+
+# Manipulate lists
+prime_numbers = List.replace_at(prime_numbers, 0, 11)
+IO.puts Enum.at(prime_numbers, 0)
+
+# Insert at the specified position
+prime_numbers = List.insert_at(prime_numbers, 4, 1)
+IO.puts Enum.at(prime_numbers, 4)
+
+# Concatenate two lists
+nl = [3, 5, 9] ++ [0, 0, 0]
+IO.puts Enum.at(nl, 3)
+
+# Get the head of the list. This is O(1)
+IO.puts hd(nl)
+
+# Get the tail. This is O(1)
+IO.puts Enum.at(tl(nl), 0)
+
+# Push a new element to the top of the list. O(1)
+nl = [8 | nl]
+IO.puts hd(nl)
+
+```
+
+In Elixir, there is a special syntax to support recursive list definition:
+
+`a_list = [head | tail]`
+
+`head` can be any tpe of data, whereas `tail` is itself a list. If `tail` is an empty list, it indicates the end of the list.
+
+```elixir
+[1 | [4 | [8, 4, 6]]]
+```
