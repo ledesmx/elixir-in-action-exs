@@ -1,3 +1,5 @@
+<!-- livebook:{"file_entries":[{"name":"modifying_a_list.png","type":"attachment"},{"name":"new_element_to_the_top.png","type":"attachment"},{"name":"rebinding_a_tuple.png","type":"attachment"},{"name":"shallow_copy.png","type":"attachment"}]} -->
+
 # Chapter 2. Building blocks
 
 ## Working with variables
@@ -469,3 +471,54 @@ In Elixir, there is a special syntax to support recursive list definition:
 ```elixir
 [1 | [4 | [8, 4, 6]]]
 ```
+
+### Immutability
+
+Elixir data can't be mutated. Every function returns the new, modified version of the input data. The modification of the input will result in some data copying, but generally, most of the memory will be shared between the old and the new version.
+
+#### Modifying tuples
+
+The modified tuple is always a complete, shallow copy of the old version.
+
+Consider the following code:
+
+<!-- livebook:{"force_markdown":true} -->
+
+```elixir
+a_tuple = {a, b, c}
+new_tuple = put_elem(a_tuple, 1, b2)
+```
+
+The variable `new_tuple` will only contain a shallow copy, differing only in the second element. Both tuples reference variables `a` and `c`, and whatever is in those variables is shared (and not duplicated).
+
+<!-- livebook:{"break_markdown":true} -->
+
+![](files/shallow_copy.png)
+
+<!-- livebook:{"break_markdown":true} -->
+
+If you rebind the variable. After rebinding, `a_tuple` references another memory location. The old location of `a_tuple` isn't accessible and is available for garbage collection. The same holds for the variable `b`.
+
+<!-- livebook:{"break_markdown":true} -->
+
+![](files/rebinding_a_tuple.png)
+
+<!-- livebook:{"break_markdown":true} -->
+
+#### Modifying lists
+
+When you modify the nth element of a list, the new version will contain shallow copies of the first *n - 1* elements, followed by the modified element. After that, the tails are completely shared.
+
+<!-- livebook:{"break_markdown":true} -->
+
+![](files/modifying_a_list.png)
+
+<!-- livebook:{"break_markdown":true} -->
+
+This is precisely why adding elements to the end of a list is expensive. To append a new element at the tail, you have to iterate and shallow copy the entire list.
+
+In contrast, pushing an element to the top of a list doesn't copy anything, which makes it the least expensive operation. In this case, the new list's tail is the previous list.
+
+<!-- livebook:{"break_markdown":true} -->
+
+![](files/new_element_to_the_top.png)
