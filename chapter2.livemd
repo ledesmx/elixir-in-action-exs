@@ -197,3 +197,22 @@ IO.puts Calculator.sum(5, 6)
 IO.puts Calculator.sum(5, 6, 7)
 IO.puts Calculator.sum(5, 6, 7, 8)
 ```
+
+Always keep in mind that default values generate multiple functions of the same name with different arities. Because arity distinguishes multiple functions of the same name, it's no possible to have a function accept a variable number of arguments.
+
+<!-- livebook:{"break_markdown":true} -->
+
+### Function visibility
+
+The `def` macro makes the function public. In Elixir terminology, it's said that the function is exported.
+
+You can use the `defp` macro to make the function private. A private function can be used only inside the module it's defined in.
+
+```elixir
+defmodule TestPrivate do
+  def double(a), do: sum(a, a) # Calls the private function
+  defp sum(a, b), do: a + b # Private function
+end
+    
+TestPrivate.double(7)
+```
