@@ -245,3 +245,60 @@ MyOtherModule.my_fun()
 ```
 
 The standard library's `Kernel` module is automatically imported into every modue. This is because `Kernel` contains functions that are often used.
+
+<!-- livebook:{"break_markdown":true} -->
+
+### Module attributes
+
+The purpose of module attributes is twofild:
+
+1. They can be used as compile-tiem constants.
+2. You can register any attribute, which canbe then queried in runtime.
+
+```elixir
+defmodule Circle do
+  @pi 3.1416
+
+  def area(r), do: r*r*@pi
+end
+
+# The important thing about the @pi constant is that it exists only during
+# the compilation of the module, when the references to it are inlined.
+
+Circle.area(10)
+```
+
+Moreover, an attribute can be registered, which means it will be stored in the generated binary and can be accessed in runtiem. Elixir registers some module attributes y default, such as `@moduledoc` and `@doc`.
+
+```elixir
+defmodule Circle2 do
+  @moduledoc "Implements basic circle functions"
+
+  @doc "Computes the circumference of a circle"
+  def circumference(r), do: 2*r*3.1416
+end
+```
+
+To try this:
+
+1. Generate a compiled file `elixirc circle.ex`
+2. Start `iex` shell
+3. Retrieve the attribute at runtime `Code.get_docs(Circle, :moduledoc)`
+
+More interesting is that other tools from the Elixir ecosystem know how to work with theses attributes.
+
+* You can use the help feature of `iex` to ee module's documentation: `h Circle`.
+* You can use `ex_dox` to generate HTML documentation for your project.
+
+<!-- livebook:{"break_markdown":true} -->
+
+#### Type specifications
+
+Typespecs allows you to provide type information for your functions, which can later be analized with a static tool called `dialyzer`. Provides a way of compensating for the lack of static type system.
+
+```elixir
+defmodule Ops2 do
+  @spec add(number, number) :: number
+  def add(a, b), do: a + b
+end
+```
