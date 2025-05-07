@@ -345,3 +345,18 @@ IO.puts(AnAtom == :"Elixir.AnAtom")
 ```
 
 It's no accident that the term *alias* is used for both give alternate names to modules and atoms. When you write `alias IO, as: MyIO`, you instruct the compiler to transform`MyIO` inot `IO`. Resolving this further, the final result emitted in the generated binary is `:Elixir.IO`.
+
+#### Atoms as booleans
+
+Elixir doesn't have a dedicated boolean type. Instead, the atoms `:true` and `:false` are used. As a syntatic sugar, Elixir allows you to reference these atoms without the starting colon character.
+
+The term *boolean* is still used in Elixir to denote an atom that has a value of either `:true` or `:false`. The standard logical operators work with boolean atoms.
+
+```elixir
+IO.puts true == :true
+IO.puts false == :false
+
+IO.puts true and false
+IO.puts true or false
+IO.puts not true
+```
