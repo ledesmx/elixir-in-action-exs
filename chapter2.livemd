@@ -302,3 +302,21 @@ defmodule Ops2 do
   def add(a, b), do: a + b
 end
 ```
+
+## Understanding the type system
+
+Elixir uses the Erlang type system. Consequently integration with Erlang libraries is usually simple.
+
+### Numbers
+
+Numbers can be integers or floats. There is no upper limit on the integer size, and you can use arbitrarily large numbers.
+
+```elixir
+IO.puts 1 + 54 - 50
+IO.puts 8 / 3
+IO.puts 8 / 2 # The division operator always returns a float value
+IO.puts div(8, 3) # Integer division
+IO.puts rem(8, 2) # Remainder
+
+9999999999999999999999999999999999999999999999999999999999999999
+```
