@@ -522,3 +522,15 @@ In contrast, pushing an element to the top of a list doesn't copy anything, whic
 <!-- livebook:{"break_markdown":true} -->
 
 ![](files/new_element_to_the_top.png)
+
+<!-- livebook:{"break_markdown":true} -->
+
+#### Benefits
+
+There are two important benefits of immutability:
+
+1. **Side-effect-free functions**. You can treat most functions as side-effect-free transformations. They take an input and return a result. Side-effect-free functions are easier to analyze, understand, and test. They have well-defined inputs and outputs. When you call a function, you can be sure that no variable will be implicitly changed. Whatever the function does, you must take its result and do something with it.
+
+   > Elixir isn't a pure functional language, so functions may still have side effects. A function my write something to a file and issue a database or network call, which causes it to produce a side effect. But you can be certain that a function won't modify the value of any variable.
+
+2. **Data consistency**. The implicit consequence of immutable data is the ability to hold all versions of a data structure in the program. When we pass some data through a series of transformations, if something goes wrong, the function can return the original data, which will roll back all of the transformations performed.  This is possible because none of the transformations modifies the memory occupied by the original data.
