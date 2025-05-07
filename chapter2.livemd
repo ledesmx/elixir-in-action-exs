@@ -360,3 +360,37 @@ IO.puts true and false
 IO.puts true or false
 IO.puts not true
 ```
+
+#### Nil and truthy values
+
+`:nil` works somewhat similarly to `null` from other languages. You can reference `nil` without a colon.
+
+The atoms `nil` and `false` are treated as *falsy* values, whereas everything else is treated as a `truthy` value. This property can be used with Elixir's *short-circuit* operators `||`, `&&`, and `!`.
+
+```elixir
+IO.puts :nil == nil
+
+# || returns the first expression that isn't falsy
+IO.puts nil || false || 5 || true
+
+# && returns the second expression, but only if the first one is truthy,
+# Otherwise it returns the first expression withouth evaluating the second one
+IO.puts true && 5
+IO.puts false && 5
+```
+
+Short-circuiting can be used for elegant operation chaining.
+
+<!-- livebook:{"force_markdown":true} -->
+
+```elixir
+read_cached || read_from_disk || read_from_database
+```
+
+You can use `&&` to ensure that certain conditions are met.
+
+<!-- livebook:{"force_markdown":true} -->
+
+```elixir
+database_value = connection_established? && read_data
+```
