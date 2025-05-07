@@ -320,3 +320,28 @@ IO.puts rem(8, 2) # Remainder
 
 9999999999999999999999999999999999999999999999999999999999999999
 ```
+
+### Atoms
+
+Atoms are literal named constants. It consists of two parts:
+
+1. **Text**: Is whatever you put after the colon character. At runtime, this text is kept in the *atom table*.
+2. **Value**: Is the data that goes into the variable, and it's merely a reference to the atom table.
+
+An *Alias* is an alternative syntax for atoms. When you use an alias, the compiler implicitly adds the Elixir. prefix to its text and inserts an atom there.
+
+```elixir
+:an_atom
+:"an atom with spaces"
+
+# The variable contains only a reference to the atom table.
+# Memory consumtion is low, the comparisons are fast, and the code
+# is still readable.
+variable = :some_atom
+
+# You can omit the beginning colon, and start with uppercase
+# This is called an alias and is transformed into :"Elixir.AliasName"
+IO.puts(AnAtom == :"Elixir.AnAtom")
+```
+
+It's no accident that the term *alias* is used for both give alternate names to modules and atoms. When you write `alias IO, as: MyIO`, you instruct the compiler to transform`MyIO` inot `IO`. Resolving this further, the final result emitted in the generated binary is `:Elixir.IO`.
