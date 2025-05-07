@@ -560,3 +560,23 @@ new_bob = %{bob | name: "Bob Williams", age: 44}
 new_bob = Map.put(new_bob, :passion, "Composition")
 
 ```
+
+### Binaries and bitstrings
+
+A *binary* is a chunck of bytes. They're consecutive sequences of bytes. Binaries play an important role in support for strings.
+
+If you provide a byte value bigger than 255, it's truncated to the byte size.
+
+```elixir
+# Each number represents a value of the corresponding byte
+<<1, 2, 3>>
+
+# Truncated to <<4>>
+<<260>>
+
+# Specify the size of each value. Tell how many bits to use.
+<<260::16>>
+
+# Concatenate two binaries or bitstrings
+<<1, 2>> <> <<4, 5>>
+```
